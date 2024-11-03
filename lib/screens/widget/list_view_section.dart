@@ -56,7 +56,7 @@ class ListViewSection extends StatelessWidget {
                         borderRadius: BorderRadius.circular(16),
                         color: Colors.white,
                         border: Border.all(
-                          color: Color(0xFFB3CEFA),
+                          color: const Color(0xFFB3CEFA),
                           width: 2,
                         ),
                         boxShadow: [
@@ -115,7 +115,7 @@ class ListViewSection extends StatelessWidget {
                                       children: [
                                         Row(
                                           children: [
-                                            Icon(
+                                            const Icon(
                                               Icons.add_circle_outline_rounded,
                                               color: Color(0xFF5F93CF),
                                             ),
@@ -128,7 +128,7 @@ class ListViewSection extends StatelessWidget {
                                             ),
                                           ],
                                         ),
-                                        Icon(
+                                        const Icon(
                                           Icons.play_arrow,
                                           color: Color(0xFF4285F4),
                                         ),

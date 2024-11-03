@@ -3,10 +3,13 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:vibration/vibration.dart';
 import '../auth/login_screen.dart';
 import '../widget/SlidePageRoute.dart';
 
 class LogoutScreen extends StatefulWidget {
+  const LogoutScreen({super.key});
+
   @override
   _LogoutScreenState createState() => _LogoutScreenState();
 }
@@ -72,7 +75,7 @@ class _LogoutScreenState extends State<LogoutScreen>
       _terakhirDibuka = indeks;
     } else {
       _dapatMembalik = false;
-      Timer(Duration(milliseconds: 500), () {
+      Timer(const Duration(milliseconds: 500), () {
         if (_ubin[_terakhirDibuka!] == _ubin[indeks]) {
           _terpecahkan[_terakhirDibuka!] = true;
           _terpecahkan[indeks] = true;
@@ -83,6 +86,7 @@ class _LogoutScreenState extends State<LogoutScreen>
           _terbuka[_terakhirDibuka!] = false;
           _terbuka[indeks] = false;
           _kontrolerGetar.forward(from: 0.0);
+          Vibration.vibrate(duration: 200); // Tambahkan getaran saat salah
         }
         _terakhirDibuka = null;
         _dapatMembalik = true;
@@ -100,22 +104,22 @@ class _LogoutScreenState extends State<LogoutScreen>
           backgroundColor: Colors.white,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: Text('Selamat!',
+          title: const Text('Selamat!',
               style: TextStyle(fontFamily: 'Roboto', color: Colors.black)),
           content: Text(
               'Anda telah menyelesaikan permainan dalam $_langkah langkah. Anda sekarang dapat keluar.',
-              style: TextStyle(
+              style: const TextStyle(
                   fontFamily: 'Roboto', color: Colors.black, fontSize: 16)),
           actions: <Widget>[
             TextButton(
-              child: Text('Keluar',
+              child: const Text('Keluar',
                   style: TextStyle(
                       fontFamily: 'Roboto',
                       color: Color(0xFF4285F4),
                       fontSize: 18)),
               onPressed: () {
                 Navigator.of(context).pushReplacement(
-                  SlidePageRoute(page: LoginScreen()),
+                  SlidePageRoute(page: const LoginScreen()),
                 );
               },
             ),
@@ -138,26 +142,26 @@ class _LogoutScreenState extends State<LogoutScreen>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     'Permainan Memori',
                     style: TextStyle(
                       fontFamily: 'Roboto',
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
-                      color: const Color.fromARGB(255, 42, 41, 41),
+                      color: Color.fromARGB(255, 42, 41, 41),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Card(
                     elevation: 4,
-                    color: Color(0xFF5F93CF),
+                    color: const Color(0xFF5F93CF),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
                         children: [
-                          Text(
+                          const Text(
                             'Cocokkan ikon untuk Logout',
                             style: TextStyle(
                                 fontFamily: 'Roboto',
@@ -165,10 +169,10 @@ class _LogoutScreenState extends State<LogoutScreen>
                                 color: Colors.white),
                             textAlign: TextAlign.center,
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Text(
                             'Langkah: $_langkah',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontFamily: 'Roboto',
                                 fontSize: 16,
                                 color: Colors.white),
@@ -177,7 +181,7 @@ class _LogoutScreenState extends State<LogoutScreen>
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Expanded(
                     child: Padding(
                       padding: const EdgeInsets.all(20.0),
@@ -195,7 +199,7 @@ class _LogoutScreenState extends State<LogoutScreen>
                               double itemSize = (constraints.maxWidth - 30) / 4;
                               return GridView.builder(
                                 gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 4,
                                   childAspectRatio: 1.0,
                                   crossAxisSpacing: 10.0,
@@ -220,17 +224,11 @@ class _LogoutScreenState extends State<LogoutScreen>
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
                   ElevatedButton(
-                    child: Text('Mulai Ulang',
-                        style: TextStyle(
-                            fontFamily: 'Roboto',
-                            color: Colors.white,
-                            fontSize: 20)),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFF4285F4),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                      backgroundColor: const Color(0xFF4285F4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 15),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15)),
                     ),
@@ -239,6 +237,11 @@ class _LogoutScreenState extends State<LogoutScreen>
                         _mulaiPermainanBaru();
                       });
                     },
+                    child: Text('Mulai Ulang',
+                        style: TextStyle(
+                            fontFamily: 'Roboto',
+                            color: Colors.white,
+                            fontSize: 20)),
                   ),
                 ],
               ),
@@ -262,8 +265,9 @@ class KartuMembalik extends StatelessWidget {
   final bool terpecahkan;
   final double ukuran;
 
-  KartuMembalik(
-      {required this.ikon,
+  const KartuMembalik(
+      {super.key,
+      required this.ikon,
       required this.terbuka,
       required this.terpecahkan,
       required this.ukuran});
@@ -271,16 +275,16 @@ class KartuMembalik extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
       transform: Matrix4.identity()
         ..setEntry(3, 2, 0.002)
         ..rotateY(terbuka ? pi : 0),
       transformAlignment: Alignment.center,
       decoration: BoxDecoration(
-        color: terbuka || terpecahkan ? Color(0xFF4285F4) : Colors.white,
+        color: terbuka || terpecahkan ? const Color(0xFF4285F4) : Colors.white,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Color(0xFF4285F4), width: 1.5),
+        border: Border.all(color: const Color(0xFF4285F4), width: 1.5),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
@@ -293,7 +297,7 @@ class KartuMembalik extends StatelessWidget {
         child: terbuka || terpecahkan
             ? Icon(ikon, color: Colors.white, size: ukuran * 0.6)
             : Icon(Icons.question_mark,
-                color: Color(0xFF4285F4), size: ukuran * 0.6),
+                color: const Color(0xFF4285F4), size: ukuran * 0.6),
       ),
     );
   }

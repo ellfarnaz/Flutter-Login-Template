@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+  const RegisterScreen({super.key});
 
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
@@ -17,6 +18,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final FocusNode _passwordFocusNode = FocusNode();
   final FocusNode _confirmPasswordFocusNode = FocusNode();
 
+  String? _emailError;
+  String? _passwordError;
+  String? _confirmPasswordError;
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -26,6 +31,68 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _passwordFocusNode.dispose();
     _confirmPasswordFocusNode.dispose();
     super.dispose();
+  }
+
+  bool _validateInputs() {
+    bool isValid = true;
+    setState(() {
+      _emailError = null;
+      _passwordError = null;
+      _confirmPasswordError = null;
+
+      if (_emailController.text.isEmpty) {
+        _emailError = 'Email tidak boleh kosong';
+        isValid = false;
+      } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+          .hasMatch(_emailController.text)) {
+        _emailError = 'Format email tidak valid';
+        isValid = false;
+      }
+
+      if (_passwordController.text.isEmpty) {
+        _passwordError = 'Password tidak boleh kosong';
+        isValid = false;
+      }
+
+      if (_confirmPasswordController.text.isEmpty) {
+        _confirmPasswordError = 'Konfirmasi password tidak boleh kosong';
+        isValid = false;
+      } else if (_passwordController.text != _confirmPasswordController.text) {
+        _confirmPasswordError = 'Password tidak cocok';
+        isValid = false;
+      }
+    });
+    return isValid;
+  }
+
+  void _showSuccessSnackBar() {
+    _showSnackBar(context, 'Pendaftaran berhasil!');
+  }
+
+  void _showSnackBar(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: GoogleFonts.poppins(color: Colors.white),
+        ),
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: const Color(0xFF4285F4),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+        duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  void _navigateToLogin() {
+    Future.delayed(const Duration(seconds: 2), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+      );
+    });
   }
 
   @override
@@ -100,6 +167,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               hint: 'Email',
                               width: inputWidth,
                               context: context,
+                              errorText: _emailError,
                             ),
                             SizedBox(height: screenHeight * 0.025),
                             _buildInputField(
@@ -110,6 +178,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               isPassword: true,
                               width: inputWidth,
                               context: context,
+                              errorText: _passwordError,
                             ),
                             SizedBox(height: screenHeight * 0.025),
                             _buildInputField(
@@ -120,6 +189,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               isPassword: true,
                               width: inputWidth,
                               context: context,
+                              errorText: _confirmPasswordError,
                             ),
                             SizedBox(height: screenHeight * 0.02),
                             // Additional text
@@ -150,10 +220,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
     required double width,
     required BuildContext context,
     bool isPassword = false,
+    String? errorText,
   }) {
     final textScale = MediaQuery.of(context).textScaleFactor;
 
-    return Container(
+    return SizedBox(
       width: width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -165,41 +236,59 @@ class _RegisterScreenState extends State<RegisterScreen> {
               fontWeight: FontWeight.normal,
             ),
           ),
-          SizedBox(height: 8),
-          Container(
-            height: 48,
-            child: TextFormField(
-              controller: controller,
-              focusNode: focusNode,
-              obscureText: isPassword,
-              textAlign: TextAlign.left,
-              style: GoogleFonts.poppins(fontSize: 14 * textScale),
-              decoration: InputDecoration(
-                isDense: true,
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: width * 0.04,
-                  vertical: 12,
+          const SizedBox(height: 8),
+          TextFormField(
+            controller: controller,
+            focusNode: focusNode,
+            obscureText: isPassword,
+            textAlign: TextAlign.left,
+            style: GoogleFonts.poppins(fontSize: 14 * textScale),
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: width * 0.04,
+                vertical: 12,
+              ),
+              hintText: hint,
+              hintStyle: GoogleFonts.poppins(
+                fontSize: 12 * textScale,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color:
+                      errorText != null ? Colors.red : const Color(0xFF4285F4),
+                  width: 1,
                 ),
-                hintText: hint,
-                hintStyle: GoogleFonts.poppins(
-                  fontSize: 12 * textScale,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color:
+                      errorText != null ? Colors.red : const Color(0xFF4285F4),
+                  width: 2,
                 ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Color(0xFF4285F4),
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.red,
+                  width: 1,
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Color(0xFF4285F4),
-                    width: 2,
-                  ),
-                  borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.red,
+                  width: 2,
                 ),
-                filled: true,
-                fillColor: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              filled: true,
+              fillColor: Colors.white,
+              errorText: errorText,
+              errorStyle: GoogleFonts.poppins(
+                fontSize: 12 * textScale,
+                color: Colors.red,
               ),
             ),
           ),
@@ -211,7 +300,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget _buildAdditionalText(BuildContext context, double width) {
     final textScale = MediaQuery.of(context).textScaleFactor;
 
-    return Container(
+    return SizedBox(
       width: width,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -222,7 +311,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               'Sudah memiliki akun ?',
               style: GoogleFonts.roboto(fontSize: 13 * textScale),
             ),
-            SizedBox(height: 4),
             GestureDetector(
               onTap: () {
                 Navigator.pop(context);
@@ -230,8 +318,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: Text(
                 'Masuk',
                 style: GoogleFonts.roboto(
-                  color: Color(0xFF4285F4),
+                  color: const Color(0xFF4285F4),
                   fontSize: 13 * textScale,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
@@ -249,9 +338,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       width: width,
       height: screenHeight * 0.07,
       decoration: BoxDecoration(
-        color: Color(0xFF4285F4),
+        color: const Color(0xFF4285F4),
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             blurRadius: 4,
             color: Color(0x29000000),
@@ -261,7 +350,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
       child: TextButton(
         onPressed: () {
-          print('Register button pressed');
+          if (_validateInputs()) {
+            // Simulasi proses pendaftaran
+            // Di sini Anda akan menambahkan logika pendaftaran yang sebenarnya
+            print('Register button pressed - all inputs valid');
+
+            // Tampilkan SnackBar sukses
+            _showSuccessSnackBar();
+
+            // Navigasi ke halaman login setelah delay
+            _navigateToLogin();
+          }
         },
         child: Center(
           child: FittedBox(

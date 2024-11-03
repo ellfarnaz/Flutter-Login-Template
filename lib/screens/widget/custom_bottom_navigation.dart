@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'dart:io' show Platform;
 
 class CustomBottomNavigation extends StatelessWidget {
   final int selectedIndex;
   final Function(int) onItemSelected;
 
   const CustomBottomNavigation({
-    Key? key,
+    super.key,
     required this.selectedIndex,
     required this.onItemSelected,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
+    final double containerHeight = Platform.isIOS ? 100.0 : 70.0;
+
     return Theme(
       data: Theme.of(context).copyWith(
         navigationBarTheme: NavigationBarThemeData(
-          labelTextStyle: MaterialStateProperty.resolveWith((states) {
-            if (states.contains(MaterialState.selected)) {
+          labelTextStyle: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.selected)) {
               return GoogleFonts.roboto(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
@@ -33,7 +36,7 @@ class CustomBottomNavigation extends StatelessWidget {
         ),
       ),
       child: Container(
-        height: 70,
+        height: containerHeight,
         decoration: BoxDecoration(
           color: const Color(0xFFB3CEFA),
           boxShadow: [
@@ -57,7 +60,7 @@ class CustomBottomNavigation extends StatelessWidget {
                 Icons.logout, Icons.logout_outlined, 'Logout', 2),
           ],
           labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-          height: 60,
+          height: 30,
           backgroundColor: const Color(0xFFB3CEFA),
           surfaceTintColor: Colors.transparent,
           shadowColor: Colors.transparent,

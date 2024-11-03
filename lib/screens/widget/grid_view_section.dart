@@ -25,7 +25,7 @@ class GridViewSection extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: 13),
-                Icon(
+                const Icon(
                   Icons.arrow_forward,
                   size: 24,
                   color: Color(0xFF4285F4),
@@ -58,7 +58,7 @@ class GridViewSection extends StatelessWidget {
 class EnhancedGridItem extends StatefulWidget {
   final int index;
 
-  const EnhancedGridItem({Key? key, required this.index}) : super(key: key);
+  const EnhancedGridItem({super.key, required this.index});
 
   @override
   _EnhancedGridItemState createState() => _EnhancedGridItemState();
@@ -117,7 +117,7 @@ class _EnhancedGridItemState extends State<EnhancedGridItem>
         onTap: _handleTap,
         child: Container(
           decoration: BoxDecoration(
-            color: Color(0xFFB3CEFA),
+            color: const Color(0xFFB3CEFA),
             borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
@@ -149,7 +149,7 @@ class _EnhancedGridItemState extends State<EnhancedGridItem>
                         end: Alignment.bottomCenter,
                         colors: [
                           Colors.transparent,
-                          Color.fromARGB(255, 0, 0, 0).withOpacity(0.7)
+                          const Color.fromARGB(255, 0, 0, 0).withOpacity(0.7)
                         ],
                       ),
                     ),
@@ -173,7 +173,7 @@ class _EnhancedGridItemState extends State<EnhancedGridItem>
                       Text(
                         'Song ${widget.index + 1}',
                         style: GoogleFonts.roboto(
-                          color: Color(0xFFB3CEFA),
+                          color: const Color(0xFFB3CEFA),
                           fontSize: 14,
                         ),
                       ),
@@ -192,7 +192,7 @@ class _EnhancedGridItemState extends State<EnhancedGridItem>
                     child: Icon(
                       _isLiked ? Icons.favorite : Icons.favorite_border,
                       key: ValueKey<bool>(_isLiked),
-                      color: _isLiked ? Color(0xFF4285F4) : Colors.white,
+                      color: _isLiked ? const Color(0xFF4285F4) : Colors.white,
                       size: 28,
                     ),
                   ),

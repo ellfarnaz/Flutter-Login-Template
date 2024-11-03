@@ -11,7 +11,7 @@ class AkunScreen extends StatelessWidget {
       SnackBar(
         content: Text(message),
         behavior: SnackBarBehavior.floating,
-        backgroundColor: Color(0xFF4285F4),
+        backgroundColor: const Color(0xFF4285F4),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -38,7 +38,7 @@ class AkunScreen extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(
-                      color: Color(0xFFB3CEFA),
+                      color: const Color(0xFFB3CEFA),
                       width: 2,
                     ),
                     boxShadow: [
@@ -56,7 +56,7 @@ class AkunScreen extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: Color(0xFFB3CEFA),
+                          color: const Color(0xFFB3CEFA),
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: GridView.count(
@@ -69,7 +69,7 @@ class AkunScreen extends StatelessWidget {
                           children: List.generate(
                             4,
                             (index) => Container(
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 color: Color(0xFF5F93CF),
                                 shape: BoxShape.circle,
                               ),
@@ -130,8 +130,8 @@ class AkunScreen extends StatelessWidget {
                             iconColor: Colors.blue,
                             title: 'Kelola Akun',
                             onTap: () {
-                              Navigator.of(context)
-                                  .push(SlidePageRoute(page: ProfileScreen()));
+                              Navigator.of(context).push(
+                                  SlidePageRoute(page: const ProfileScreen()));
                             },
                             isFirstItem: true,
                           ),
@@ -177,7 +177,7 @@ class AkunScreen extends StatelessWidget {
   }
 
   Widget _buildDivider() {
-    return Divider(
+    return const Divider(
       height: 1,
       thickness: 1,
       color: Color(0xFFB3CEFA),
@@ -223,7 +223,7 @@ class AkunScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Icon(
+            const Icon(
               Icons.arrow_forward_ios,
               size: 16,
               color: Color(0xFF5F93CF),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
-  const ForgotPasswordScreen({Key? key}) : super(key: key);
+  const ForgotPasswordScreen({super.key});
 
   @override
   _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
@@ -109,7 +109,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Widget _buildMessageSection(BuildContext context, double width) {
     final textScale = MediaQuery.of(context).textScaleFactor;
 
-    return Container(
+    return SizedBox(
       width: width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,7 +121,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               fontWeight: FontWeight.w600,
             ),
           ),
-          SizedBox(height: 8),
+          const SizedBox(height: 8),
           Text(
             'Masukan email Anda dan tunggu kode etik akan dikirimkan.',
             style: GoogleFonts.poppins(
@@ -138,7 +138,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Widget _buildInputField(BuildContext context, double width) {
     final textScale = MediaQuery.of(context).textScaleFactor;
 
-    return Container(
+    return SizedBox(
       width: width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,8 +150,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               fontWeight: FontWeight.normal,
             ),
           ),
-          SizedBox(height: 8),
-          Container(
+          const SizedBox(height: 8),
+          SizedBox(
             height: 48,
             child: TextFormField(
               controller: _emailController,
@@ -171,14 +171,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   fontSize: 12 * textScale,
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
+                  borderSide: const BorderSide(
                     color: Color(0xFF4285F4),
                     width: 1,
                   ),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
+                  borderSide: const BorderSide(
                     color: Color(0xFF4285F4),
                     width: 2,
                   ),
@@ -202,9 +202,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       width: width,
       height: screenHeight * 0.07,
       decoration: BoxDecoration(
-        color: Color(0xFF4285F4),
+        color: const Color(0xFF4285F4),
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             blurRadius: 4,
             color: Color(0x29000000),

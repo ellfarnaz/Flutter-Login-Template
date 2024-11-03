@@ -16,6 +16,8 @@ class LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   final FocusNode _emailFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
+  String? _emailError;
+  String? _passwordError;
 
   @override
   void dispose() {
@@ -24,6 +26,29 @@ class LoginScreenState extends State<LoginScreen> {
     _emailFocusNode.dispose();
     _passwordFocusNode.dispose();
     super.dispose();
+  }
+
+  bool _validateInputs() {
+    bool isValid = true;
+    setState(() {
+      _emailError = null;
+      _passwordError = null;
+
+      if (_emailController.text.isEmpty) {
+        _emailError = 'Email tidak boleh kosong';
+        isValid = false;
+      } else if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+          .hasMatch(_emailController.text)) {
+        _emailError = 'Format email tidak valid';
+        isValid = false;
+      }
+
+      if (_passwordController.text.isEmpty) {
+        _passwordError = 'Password tidak boleh kosong';
+        isValid = false;
+      }
+    });
+    return isValid;
   }
 
   @override
@@ -59,10 +84,8 @@ class LoginScreenState extends State<LoginScreen> {
                           horizontal: screenWidth * 0.05,
                         ),
                         child: Column(
-                          mainAxisAlignment:
-                              MainAxisAlignment.center, // Center vertically
-                          crossAxisAlignment:
-                              CrossAxisAlignment.center, // Center horizontally
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             SizedBox(height: screenHeight * 0.05),
                             // Logo
@@ -102,6 +125,7 @@ class LoginScreenState extends State<LoginScreen> {
                               hint: 'Email',
                               width: inputWidth,
                               context: context,
+                              errorText: _emailError,
                             ),
                             SizedBox(height: screenHeight * 0.025),
                             _buildInputField(
@@ -112,6 +136,7 @@ class LoginScreenState extends State<LoginScreen> {
                               isPassword: true,
                               width: inputWidth,
                               context: context,
+                              errorText: _passwordError,
                             ),
                             SizedBox(height: screenHeight * 0.02),
                             // Additional text
@@ -142,10 +167,11 @@ class LoginScreenState extends State<LoginScreen> {
     required double width,
     required BuildContext context,
     bool isPassword = false,
+    String? errorText,
   }) {
     final textScale = MediaQuery.of(context).textScaleFactor;
 
-    return Container(
+    return SizedBox(
       width: width,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,40 +184,58 @@ class LoginScreenState extends State<LoginScreen> {
             ),
           ),
           const SizedBox(height: 8),
-          Container(
-            height: 48,
-            child: TextFormField(
-              controller: controller,
-              focusNode: focusNode,
-              obscureText: isPassword,
-              textAlign: TextAlign.left,
-              style: GoogleFonts.poppins(fontSize: 14 * textScale),
-              decoration: InputDecoration(
-                isDense: true,
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: width * 0.04,
-                  vertical: 12,
+          TextFormField(
+            controller: controller,
+            focusNode: focusNode,
+            obscureText: isPassword,
+            textAlign: TextAlign.left,
+            style: GoogleFonts.poppins(fontSize: 14 * textScale),
+            decoration: InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: width * 0.04,
+                vertical: 12,
+              ),
+              hintText: hint,
+              hintStyle: GoogleFonts.poppins(
+                fontSize: 12 * textScale,
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color:
+                      errorText != null ? Colors.red : const Color(0xFF4285F4),
+                  width: 1,
                 ),
-                hintText: hint,
-                hintStyle: GoogleFonts.poppins(
-                  fontSize: 12 * textScale,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color:
+                      errorText != null ? Colors.red : const Color(0xFF4285F4),
+                  width: 2,
                 ),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                    color: Color(0xFF4285F4),
-                    width: 1,
-                  ),
-                  borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.red,
+                  width: 1,
                 ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(
-                    color: Color(0xFF4285F4),
-                    width: 2,
-                  ),
-                  borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.red,
+                  width: 2,
                 ),
-                filled: true,
-                fillColor: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              filled: true,
+              fillColor: Colors.white,
+              errorText: errorText,
+              errorStyle: GoogleFonts.poppins(
+                fontSize: 12 * textScale,
+                color: Colors.red,
               ),
             ),
           ),
@@ -203,7 +247,7 @@ class LoginScreenState extends State<LoginScreen> {
   Widget _buildAdditionalText(BuildContext context, double width) {
     final textScale = MediaQuery.of(context).textScaleFactor;
 
-    return Container(
+    return SizedBox(
       width: width,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -230,7 +274,7 @@ class LoginScreenState extends State<LoginScreen> {
                     );
                   },
                   child: Text(
-                    'Daftar',
+                    'Daftar sekarang',
                     style: GoogleFonts.roboto(
                       color: const Color(0xFF4285F4),
                       fontSize: 13 * textScale,
@@ -283,10 +327,12 @@ class LoginScreenState extends State<LoginScreen> {
       ),
       child: TextButton(
         onPressed: () {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => HomeScreen()),
-          );
+          if (_validateInputs()) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
+            );
+          }
         },
         child: Center(
           child: FittedBox(

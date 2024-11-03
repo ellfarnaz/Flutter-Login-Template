@@ -45,10 +45,10 @@ class _HomeContentState extends State<HomeContent> {
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(kToolbarHeight),
+        preferredSize: const Size.fromHeight(kToolbarHeight),
         child: Container(
           decoration: BoxDecoration(
-            color: _isScrolled ? Color(0xFFB3CEFA) : Colors.grey[100],
+            color: _isScrolled ? const Color(0xFFB3CEFA) : Colors.grey[100],
             boxShadow: _isScrolled
                 ? [
                     BoxShadow(
