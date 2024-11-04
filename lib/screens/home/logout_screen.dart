@@ -1,5 +1,3 @@
-// File: screens/home/logout_screen.dart
-
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
@@ -63,7 +61,7 @@ class _LogoutScreenState extends State<LogoutScreen>
     _dapatMembalik = true;
   }
 
-  void _balikUbin(int indeks) {
+  Future<void> _balikUbin(int indeks) async {
     if (!_dapatMembalik || _terbuka[indeks] || _terpecahkan[indeks]) return;
 
     setState(() {
@@ -75,7 +73,7 @@ class _LogoutScreenState extends State<LogoutScreen>
       _terakhirDibuka = indeks;
     } else {
       _dapatMembalik = false;
-      Timer(const Duration(milliseconds: 500), () {
+      Timer(const Duration(milliseconds: 500), () async {
         if (_ubin[_terakhirDibuka!] == _ubin[indeks]) {
           _terpecahkan[_terakhirDibuka!] = true;
           _terpecahkan[indeks] = true;
@@ -86,7 +84,16 @@ class _LogoutScreenState extends State<LogoutScreen>
           _terbuka[_terakhirDibuka!] = false;
           _terbuka[indeks] = false;
           _kontrolerGetar.forward(from: 0.0);
-          Vibration.vibrate(duration: 200); // Tambahkan getaran saat salah
+
+          // Cek apakah perangkat mendukung getaran
+          bool? hasVibrator = await Vibration.hasVibrator();
+          print('Device has vibrator: $hasVibrator');
+          if (hasVibrator == true) {
+            print('Attempting to vibrate');
+            Vibration.vibrate(duration: 200);
+          } else {
+            print('Device does not support vibration');
+          }
         }
         _terakhirDibuka = null;
         _dapatMembalik = true;
@@ -237,7 +244,7 @@ class _LogoutScreenState extends State<LogoutScreen>
                         _mulaiPermainanBaru();
                       });
                     },
-                    child: Text('Mulai Ulang',
+                    child: const Text('Mulai Ulang',
                         style: TextStyle(
                             fontFamily: 'Roboto',
                             color: Colors.white,

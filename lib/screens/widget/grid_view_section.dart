@@ -138,6 +138,14 @@ class _EnhancedGridItemState extends State<EnhancedGridItem>
                     child: Image.network(
                       'https://picsum.photos/seed/${554 + widget.index}/600',
                       fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        print('Error loading image: $error');
+                        return const Icon(Icons.error);
+                      },
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return const Center(child: CircularProgressIndicator());
+                      },
                     ),
                   ),
                 ),

@@ -81,6 +81,32 @@ class ListViewSection extends StatelessWidget {
                                   width: 120,
                                   height: 120,
                                   fit: BoxFit.cover,
+                                  loadingBuilder:
+                                      (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return Center(
+                                      child: CircularProgressIndicator(
+                                        value: loadingProgress
+                                                    .expectedTotalBytes !=
+                                                null
+                                            ? loadingProgress
+                                                    .cumulativeBytesLoaded /
+                                                loadingProgress
+                                                    .expectedTotalBytes!
+                                            : null,
+                                      ),
+                                    );
+                                  },
+                                  errorBuilder: (context, error, stackTrace) {
+                                    print('Error loading image: $error');
+                                    return Container(
+                                      width: 120,
+                                      height: 120,
+                                      color: Colors.grey[300],
+                                      child:
+                                          Icon(Icons.error, color: Colors.red),
+                                    );
+                                  },
                                 ),
                               ),
                               const SizedBox(width: 15),
