@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -103,8 +105,8 @@ class ListViewSection extends StatelessWidget {
                                       width: 120,
                                       height: 120,
                                       color: Colors.grey[300],
-                                      child:
-                                          Icon(Icons.error, color: Colors.red),
+                                      child: const Icon(Icons.error,
+                                          color: Colors.red),
                                     );
                                   },
                                 ),

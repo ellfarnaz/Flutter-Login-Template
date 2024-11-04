@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'register_screen.dart';
@@ -217,14 +219,14 @@ class LoginScreenState extends State<LoginScreen> {
                 borderRadius: BorderRadius.circular(12),
               ),
               errorBorder: OutlineInputBorder(
-                borderSide: BorderSide(
+                borderSide: const BorderSide(
                   color: Colors.red,
                   width: 1,
                 ),
                 borderRadius: BorderRadius.circular(12),
               ),
               focusedErrorBorder: OutlineInputBorder(
-                borderSide: BorderSide(
+                borderSide: const BorderSide(
                   color: Colors.red,
                   width: 2,
                 ),

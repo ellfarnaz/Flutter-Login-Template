@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'profile_screen.dart';
-import 'SlidePageRoute.dart';
+import '../widget/slide_page_route.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AkunScreen extends StatelessWidget {

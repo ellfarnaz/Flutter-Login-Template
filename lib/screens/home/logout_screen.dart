@@ -1,9 +1,11 @@
+// ignore_for_file: library_private_types_in_public_api, avoid_print
+
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:vibration/vibration.dart';
 import '../auth/login_screen.dart';
-import '../widget/SlidePageRoute.dart';
+import '../widget/slide_page_route.dart';
 
 class LogoutScreen extends StatefulWidget {
   const LogoutScreen({super.key});

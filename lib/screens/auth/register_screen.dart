@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously, deprecated_member_use, avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'login_screen.dart';
@@ -270,14 +272,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 borderRadius: BorderRadius.circular(12),
               ),
               errorBorder: OutlineInputBorder(
-                borderSide: BorderSide(
+                borderSide: const BorderSide(
                   color: Colors.red,
                   width: 1,
                 ),
                 borderRadius: BorderRadius.circular(12),
               ),
               focusedErrorBorder: OutlineInputBorder(
-                borderSide: BorderSide(
+                borderSide: const BorderSide(
                   color: Colors.red,
                   width: 2,
                 ),
@@ -351,14 +353,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: TextButton(
         onPressed: () {
           if (_validateInputs()) {
-            // Simulasi proses pendaftaran
-            // Di sini Anda akan menambahkan logika pendaftaran yang sebenarnya
             print('Register button pressed - all inputs valid');
 
-            // Tampilkan SnackBar sukses
             _showSuccessSnackBar();
 
-            // Navigasi ke halaman login setelah delay
             _navigateToLogin();
           }
         },
